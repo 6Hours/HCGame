@@ -17,13 +17,17 @@ public class Block : MonoBehaviour
     {
         move = Vector3.Distance(transform.position, last);
         last = transform.position;
+        if (move > 0.1f) Debug.Log("fall");
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if(move>0.1f)
+        GetComponent<FixedJoint2D>().enabled = false;
+
         //if(collision.gameObject.GetComponentInParent<Transform>()==GetComponentInParent<Transform>())
         //    GetComponent<FixedJoint2D>().enabled = false;
 
-        if (!collision.gameObject.CompareTag(gameObject.tag)) GetComponent<FixedJoint2D>().enabled = false;
+        //if (!collision.gameObject.CompareTag(gameObject.tag)) GetComponent<FixedJoint2D>().enabled = false;
         
         //FixedJoint2D lm;
         //if (collision.gameObject.GetComponent<Block>().move != move)
