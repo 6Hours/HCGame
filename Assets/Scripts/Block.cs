@@ -4,38 +4,44 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    Vector3 last;
-    public float move;
+
+    public float strenght=0.1f; //from 0.1f
     // Start is called before the first frame update
     void Start()
     {
-        last = transform.position;
+        //if (GetComponent<FixedJoint2D>() != null && GetComponentInParent<Rigidbody2D>() != null)
+        //    GetComponent<FixedJoint2D>().connectedBody = gameObject.get
     }
 
     // Update is called once per frame
     void Update()
     {
-        move = Vector3.Distance(transform.position, last);
-        last = transform.position;
-        if (move > 0.1f) Debug.Log("fall");
+
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(move>0.1f)
-        GetComponent<FixedJoint2D>().enabled = false;
+        Debug.Log(Vector3.Magnitude(GetComponent<Rigidbody2D>().velocity + collision.rigidbody.velocity));
 
-        //if(collision.gameObject.GetComponentInParent<Transform>()==GetComponentInParent<Transform>())
-        //    GetComponent<FixedJoint2D>().enabled = false;
-
-        //if (!collision.gameObject.CompareTag(gameObject.tag)) GetComponent<FixedJoint2D>().enabled = false;
-        
-        //FixedJoint2D lm;
-        //if (collision.gameObject.GetComponent<Block>().move != move)
-        //{ TryGetComponent<FixedJoint2D>(out lm); lm.enabled = false;}
+        if (Vector3.Magnitude(GetComponent<Rigidbody2D>().velocity+collision.rigidbody.velocity) > strenght)
+            Unchained();
         
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if (collision.gameObject.CompareTag("Dinamite")) {
+            Vector2 target = transform.position - collision.transform.position;
+            target *= (collision.GetComponent<Dinamite>().Radius-GetComponent<Rigidbody2D>().mass);
+            Detonate(target);
+        }
+    }
+
+    public void Unchained()
+    {
+        if(GetComponent<FixedJoint2D>()!=null)
+        GetComponent<FixedJoint2D>().enabled = false;
+    }
+    public void Detonate(Vector2 target)
+    {
+
     }
 }

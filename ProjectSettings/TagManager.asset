@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - LineBlock
+  - Dinamite
   layers:
   - Default
   - TransparentFX
