@@ -28,6 +28,8 @@ public class Block : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.CompareTag("ScoreScreen"))
+            FindObjectOfType<ScoreCounter>().scoreUp();
         if (collision.gameObject.CompareTag("Dinamite")) {
             Vector2 target = transform.position - collision.transform.position;
             target *= (collision.GetComponent<Dinamite>().Radius+1f-Vector2.Distance(transform.position, collision.gameObject.transform.position))*30f;
@@ -49,7 +51,6 @@ public class Block : MonoBehaviour
     public void Detonate(Vector2 target)
     {
         GetComponent<Rigidbody2D>().AddForce(GetComponent<Rigidbody2D>().velocity+target);
-        Debug.Log(target);
     }
     private void OnMouseUp()
     {

@@ -6,6 +6,7 @@ public class Dinamite : MonoBehaviour
 {
     public float Radius = 1f;
     public float Power = 200f;
+    public Sprite Boom;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +22,7 @@ public class Dinamite : MonoBehaviour
     {
         GetComponent<CircleCollider2D>().enabled = true;
         GetComponent<CircleCollider2D>().radius = Radius;
+
         Destroy(gameObject,0.1f);
     }
 }

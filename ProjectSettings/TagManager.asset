@@ -6,6 +6,7 @@ TagManager:
   tags:
   - LineBlock
   - Dinamite
+  - ScoreScreen
   layers:
   - Default
   - TransparentFX

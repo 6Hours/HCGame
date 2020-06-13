@@ -21,7 +21,7 @@ public class Utils : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
     public void Detonate()
     {
@@ -43,9 +43,9 @@ public class Utils : MonoBehaviour
     {
         SceneController.RestartScene();
     }
-    public void GoMenu()
+    public void SceneLoad(string sceneName)
     {
-        SceneController.OpenScene("Menu");
+        SceneController.OpenScene(sceneName);
     }
 
     IEnumerator Explose()
@@ -54,6 +54,13 @@ public class Utils : MonoBehaviour
         {
             elem.GetComponent<Dinamite>().Detonate();
             yield return new WaitForSeconds(WaitTime);
+        }
+        Elems.Clear();
+        yield return new WaitForSeconds(2f);
+        if (numberDinamite[tool] == 0)
+        {
+            //yield return new WaitForSeconds();
+            FindObjectOfType<ScoreCounter>().Activate();
         }
         StopAllCoroutines();
     }
