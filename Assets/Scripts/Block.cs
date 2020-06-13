@@ -30,7 +30,8 @@ public class Block : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Dinamite")) {
             Vector2 target = transform.position - collision.transform.position;
-            //target *= (collision.GetComponent<Dinamite>().Radius-Vector2.Distance(transform.position, collision.transform.position));
+            target *= (collision.GetComponent<Dinamite>().Radius+1f-Vector2.Distance(transform.position, collision.gameObject.transform.position))*30f;
+            if (Vector2.Distance(transform.position, collision.gameObject.transform.position) < 0.1f) Destroy(gameObject);
             Unchained();
             Detonate(target*collision.GetComponent<Dinamite>().Power);
         }
@@ -47,7 +48,7 @@ public class Block : MonoBehaviour
     }
     public void Detonate(Vector2 target)
     {
-        GetComponent<Rigidbody2D>().AddForce(target);
+        GetComponent<Rigidbody2D>().AddForce(GetComponent<Rigidbody2D>().velocity+target);
         Debug.Log(target);
     }
     private void OnMouseUp()

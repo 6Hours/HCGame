@@ -5,14 +5,15 @@ using UnityEngine;
 public class Utils : MonoBehaviour
 {
     
-    private GameObject Example;
-    public int tool = 1;
-    public int numberDinamite = 1;
-    public float sizeModificator=1f;
+    public GameObject[] Tools;
+    private List<GameObject> Elems=new List<GameObject>();
+    public int tool = 0;//0 and more
+    public int[] numberDinamite;
+    public float WaitTime=0.1f;
     // Start is called before the first frame update
     void Start()
     {
-        Example = FindObjectOfType<Dinamite>().gameObject;
+
 
 
     }
@@ -24,35 +25,18 @@ public class Utils : MonoBehaviour
     }
     public void Detonate()
     {
-        if (Example != null)
+        if (Elems.Count>0)
         {
-            var dinams = FindObjectsOfType<Dinamite>();
-            for (int i = 0; i < dinams.Length; i++)
-            {
-                dinams[i].Detonate();
-            }
+            StartCoroutine(Explose());
         }
     }
     public void Install(Vector2 lm)
     {
-        if (numberDinamite > 0&&Example!=null) {
+        if (numberDinamite[tool] > 0) {
 
-            //Camera cam = FindObjectOfType<Camera>();
-            //if (Physics2D.Raycast(cam.transform.position, new Vector3())
-            //{
-            //    RaycastHit2D hit=Physics2D.Raycast(cam.transform.position, Input.mousePosition);
-            //    Vector2 lm = new Vector2(hit.point.x, hit.point.y);
-            //    Instantiate(Example, lm, Quaternion.identity);
-            //    numberDinamite--;
-            //}
+            Elems.Add(Instantiate(Tools[tool], lm, Quaternion.identity));
+            numberDinamite[tool]--;
 
-            
-            Instantiate(Example, lm, Quaternion.identity);
-            numberDinamite--;
-
-            //Vector2 lm = new Vector2(-3f+Input.mousePosition.x*sizeModificator, -3.6f+Input.mousePosition.y*sizeModificator);
-            //Instantiate(Example, lm, Quaternion.identity);
-            //numberDinamite--;
         }
     }
     public void Restart()
@@ -61,14 +45,20 @@ public class Utils : MonoBehaviour
     }
     public void GoMenu()
     {
-        SceneController.OpenScene("Start");
+        SceneController.OpenScene("Menu");
     }
-    IEnumerator InstallDinamite()
-    {
-        Vector2 lm = new Vector2(Input.mousePosition.x * sizeModificator, Input.mousePosition.y * sizeModificator);
-        Instantiate(Example, lm, Quaternion.identity);
-        numberDinamite--;
-        yield return new WaitForSeconds(1f);
 
+    IEnumerator Explose()
+    {
+        foreach(var elem in Elems)
+        {
+            elem.GetComponent<Dinamite>().Detonate();
+            yield return new WaitForSeconds(WaitTime);
+        }
+        StopAllCoroutines();
+    }
+    public void SetTool(int index)
+    {
+        if (index < Tools.Length) tool = index;
     }
 }
