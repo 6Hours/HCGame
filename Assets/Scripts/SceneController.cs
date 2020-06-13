@@ -16,8 +16,13 @@ public class SceneController : MonoBehaviour
     {
         
     }
-    public void OpenScene(string _sceneName)
+    public static void OpenScene(string _sceneName)
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(_sceneName);
+    }
+    public static void RestartScene()
+    {
+        OpenScene(SceneManager.GetActiveScene().name);
     }
 }

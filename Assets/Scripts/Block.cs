@@ -38,12 +38,20 @@ public class Block : MonoBehaviour
 
     public void Unchained()
     {
-        if(GetComponent<FixedJoint2D>()!=null)
-        GetComponent<FixedJoint2D>().enabled = false;
+        if (GetComponent<FixedJoint2D>() != null)
+        {
+            var joints=GetComponents<FixedJoint2D>();
+            foreach (var l in joints)
+                l.enabled = false;
+        }
     }
     public void Detonate(Vector2 target)
     {
         GetComponent<Rigidbody2D>().AddForce(target);
         Debug.Log(target);
+    }
+    private void OnMouseUp()
+    {
+        FindObjectOfType<Utils>().Install(transform.position);
     }
 }
